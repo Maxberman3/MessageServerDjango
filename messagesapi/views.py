@@ -28,7 +28,7 @@ class UserMessages(APIView):
         unread = request.query_params.get('unread', None)
         user = self.get_object(pk)
         all_messages = user.sent_messages.all() | user.received_messages.all()
-        if unread is None or unread == 'False':
+        if unread is None or unread.lower() != 'true':
             serializer = MessageSerializer(all_messages.all(), many=True)
             return Response(serializer.data)
         only_unread = all_messages.filter(read=False)
